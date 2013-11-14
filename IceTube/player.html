@@ -1,0 +1,82 @@
+<!DOCTYPE html >
+<html >
+    <head>  
+        <title>Player</title>
+        <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		
+        <script src="cordova.js"></script>
+        <script src="kendo/js/jquery.min.js"></script>
+        <script src="kendo/js/kendo.mobile.min.js"></script> 
+        
+        <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
+        <link href="styles/main.css" rel="stylesheet" />
+        
+    </head>
+    <body >   
+         
+        <div data-role="layout" data-id="databinding">
+            <header data-role="header">
+                <div data-role="navbar">
+                    <a  class="nav-button" data-align="left" data-role="backbutton" href="#close">Back</a>
+                    <span data-role="view-title"></span>
+                </div>
+            </header>
+        
+        </div> 
+        
+        <div data-role="view"
+            
+            data-title="ListView" data-layout="databinding">
+                <div id="playerContainer">
+                    
+                </div>
+                <div id="content">
+                    
+                </div>
+            <script>
+                
+                var query_string = {};
+                var query = window.location.search.substring(1);
+                var vars = query.split("&");
+                var videoId = null;
+                for (var i=0;i<vars.length;i++) {
+                    var pair = vars[i].split("=");
+                    if(pair[0] === "id"){
+                        videoId=pair[1]
+                        break;
+                    }
+                }
+                
+                var localStorageName = 'localStorage';
+                var storage = window[localStorageName];
+                var value  = storage.getItem('currentItem')
+                console.log(value);
+                var entry = JSON.parse(value) ;
+                //alert(entry.id.$t.split("/").pop());
+                if(videoId != null)
+                {
+                    var container = document.getElementById('playerContainer');
+                  //  alert("test");
+                    var w = window.innerWidth,
+                        h = window.innerHeight;
+                    container.innerHTML = ' <iframe  width="'+ w 
+                        + /*'" height="' + h + */'" frameborder="0"  src="http://www.youtube.com/embed/'+videoId +'" /> ';
+                    
+                    var contentItem = document.getElementById('content');
+                    contentItem.innerHTML = entry.content.$t;
+                }
+            </script>
+            
+      </div>
+        
+        
+        <script>
+          var app = new kendo.mobile.Application(document.body);
+        
+        </script>
+        
+        
+    </body>
+</html>

@@ -1,42 +1,193 @@
 <!DOCTYPE html>
-<!--
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
 <html>
+    
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <title>Hello World</title>
+        <title>YouTube video</title>
+		
+        <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		
+        <script src="cordova.js"></script>
+        <script src="kendo/js/jquery.min.js"></script>
+        <script src="kendo/js/kendo.mobile.min.js"></script> 
+        <script src="scripts/hello-world.js"></script>
+
+        <link href="kendo/styles/kendo.mobile.all.min.css" rel="stylesheet" />
+        <link href="styles/main.css" rel="stylesheet" />
+        
+        
+        <style>
+                     
+            body
+            {
+                overflow: hidden;
+                height: 100%;
+            }
+ 
+            .nav
+            {
+                left: 0;
+                top: 0;
+                position: fixed;
+                -webkit-perspective: 1000;
+                -webkit-backface-visibility: hidden;
+                height: 100% !important;
+                display: block;
+            }
+            .nav > ul
+            {
+                width: 260px;
+            }
+             
+            .slide-to-left
+            {
+                left: 0;
+                top: 0;
+                position: fixed;
+                background-color: #FFF;
+             
+                left: 0px;
+                -webkit-transition-property: left;
+                -webkit-transition-duration: 0.35s;
+                -webkit-transition-property: ease-in-out;
+            }
+             
+            .slide-init {
+              left: 0px;
+            }
+                         
+            .slide-out
+            {
+                left: 260px !important;
+            }
+             
+            @media all and (-webkit-transform-3d)
+            {
+                .slide-to-left
+                            {
+                                -webkit-transition-property: -webkit-transform;
+                            }
+             
+                .slide-out
+                            {
+                                left: 0 !important;
+                                -webkit-transform: translate3d(260px, 0, 0) !important;
+                            }
+            }
+         
+        </style>
     </head>
     <body>
-        <div class="app">
-            <h1>Apache Cordova</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
-            </div>
+        
+        
+        <div  id="nav" class="nav" >
+            <ul data-role="listview" data-type="group" 
+                class="km-listview km-listgroup">
+                <li class="km-group-container">
+                    <div class="km-group-title">
+                        <div class="km-text">
+                            <span class="km-text">Account</span>
+                            
+                        </div>
+                        
+                    </div>
+                    <ul class="km-listview km-list">
+                         <li>Settings</li>
+                         <li>Favourites</li>
+                         <li>About</li>
+                    </ul>
+                </li>
+                <li>
+                    Page 1
+                </li>
+                <li>
+                    Page 2
+                </li>
+            </ul>
         </div>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
-        <script type="text/javascript">
-            app.initialize();
+        
+        <div data-role="view" id="flat" class="slide-to-left"
+            
+            data-title="ListView" data-layout="databinding">
+            <div data-role="touch" data-swipe="handleSwipe"
+                data-swipe="handleSwipe"
+                
+                data-touchstart="handleTouchStart"
+                data-enable-swipe="1">
+                        
+               <ul id="flat-listview"></ul>
+            </div>
+        
+        </div>
+        
+            
+        <div data-role="layout" data-id="databinding" >
+            <header data-role="header">
+                
+                <div data-role="navbar">
+                    
+                        <a data-icon="more" data-role="button" class="nav-button" data-align="left" data-click="showSlideMenu"></a>
+                        <ul id="select-sorting" data-index="0"  data-align="center">
+                            <li>
+                                Recent
+                            </li>
+                            <li>
+                                Viewed
+                            </li>
+                        </ul>
+                </div>
+            </header>
+        
+        </div>
+       
+        <script id="item-template" type="text/x-kendo-template">
+            <div class="tweet">
+                <img class="pullImage" src="#= media$group.media$thumbnail[0].url #" />
+                    #= title.$t #
+                <div class="metadata">
+                    <div class="sublink" >#= yt$statistics.viewCount # views</div>
+                </div>   
+                   
+            </div>
         </script>
+        
+                
+        
+        
+          
+        <script>
+          var app = new kendo.mobile.Application(document.body);
+            
+        
+        </script>
+    
+        <style scoped>
+            .tweet {
+                font-size: .8em;
+                line-height: 1.4em;
+            }
+            .pullImage {
+                width: 120px;
+                height: 90px;
+                border-radius: 3px;
+                float: left;
+                margin-right: 10px;
+            }
+            .sublink {
+                font-size: .9em;
+                font-weight: normal;
+                display: inline-block;
+                padding: 3px 3px 0 0;
+                text-decoration: none;
+                opacity: .8;
+            }
+                        
+            #select-period {
+           /*    margin: 1em auto .4em auto; */
+            }
+        </style>
+          
+    
     </body>
 </html>
